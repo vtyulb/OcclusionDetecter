@@ -1,4 +1,4 @@
-void kernel simple_add(global int *a) {
-    a[get_global_id(0)] = get_global_id(0);
-    a[0] = 5;
+void kernel simple_add(global int *data, global int *a) {
+    int v = get_global_id(0);
+    a[v] = v + data[v];
 }
