@@ -10,6 +10,7 @@ class Occlusions
 
         void display();
         void setRes(const QImage&);
+        QImage getRes();
 
     private:
         QImage res;

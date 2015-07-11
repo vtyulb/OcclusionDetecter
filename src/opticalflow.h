@@ -1,6 +1,8 @@
 #ifndef OPTICALFLOW_H
 #define OPTICALFLOW_H
 
+#include <math.h>
+
 #include <QVector>
 
 struct Point {
@@ -8,7 +10,7 @@ struct Point {
     int dy;
 
     Point(int x = 0, int y = 0) { dx = x; dy = y; }
-    int dist() { return dx * dx + dy * dy; }
+    int dist() { return sqrt(dx * dx + dy * dy); }
 };
 
 class OpticalFlow

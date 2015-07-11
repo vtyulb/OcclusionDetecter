@@ -6,6 +6,8 @@
 #include <opticalflow.h>
 #include <myimage.h>
 
+#define step 8
+
 class OpticalFlowDetecter {
     public:
         OpticalFlowDetecter() = delete;
