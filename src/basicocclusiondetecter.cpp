@@ -24,7 +24,7 @@ Occlusions BasicOcclusionDetecter::getOcclusions(QImage i1, QImage i2) {
             int base = flow[i][j].dist() * 10;
             if (base > 255)
                 base = 255;
-//            a.setPixel(j, i, QColor(base, base, base).rgb());
+            a.setPixel(j, i, QColor(base, base, base).rgb());
         }
 
     /*QPainter p(&a);

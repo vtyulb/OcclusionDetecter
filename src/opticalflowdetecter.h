@@ -6,7 +6,7 @@
 #include <opticalflow.h>
 #include <myimage.h>
 
-#define step 8
+#define step 4
 
 class OpticalFlowDetecter {
     public:

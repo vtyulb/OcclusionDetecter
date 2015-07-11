@@ -61,8 +61,8 @@ void Displayer::nextFrame() {
     QImage i2;
 
     if (!i1.load(("image" + QString::number(currentFrame) + ".jpg")) || !i2.load(("image" + QString::number(currentFrame + 1) + ".jpg"))) {
-        currentFrame--;
-        timer.stop();
+        currentFrame = 0;
+        nextFrame();
         return;
     }
 

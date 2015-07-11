@@ -111,14 +111,14 @@ OpticalFlow OpticalFlowDetecter::detect(const MyImage &i1, const MyImage &i2) {
 }
 
 int OpticalFlowDetecter::cmp(const MyImage &a, const MyImage &b, int x1, int y1, int x2, int y2) {
-    if (x1 + step > a.width || y1 + step > a.height || x2 + step > b.width || y2 + step > b.height ||
-            x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0)
-        return 100500;
+//    if (x1 + step > a.width || y1 + step > a.height || x2 + step > b.width || y2 + step > b.height ||
+//            x1 < 0 || y1 < 0 || x2 < 0 || y2 < 0)
+//        return 100500;
 
     int res = 0;
 
-    for (int i = 0; i < step; i++)
-        for (int j = 0; j < step; j++)
+    for (int i = -step / 2; i < step + step / 2; i++)
+        for (int j = -step / 2; j < step + step / 2; j++)
             res += sqr(abs(a[i + y1][j + x1] - b[i + y2][j + x2]));
 
     return res;
