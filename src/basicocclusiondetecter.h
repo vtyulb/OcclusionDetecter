@@ -5,10 +5,13 @@
 
 class BasicOcclusionDetecter : public AbstractOcclusionDetecter
 {
-public:
-    BasicOcclusionDetecter();
+    public:
+        BasicOcclusionDetecter();
 
-    Occlusions getOcclusions(QImage, QImage);
+        Occlusions getOcclusions(QImage, QImage);
+
+    private:
+        QImage prev;
 };
 
 #endif // BASICOCCLUSIONDETECTER_H

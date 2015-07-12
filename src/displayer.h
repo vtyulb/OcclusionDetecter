@@ -2,14 +2,15 @@
 #define DISPLAYER_H
 
 #include <QWidget>
+#include <QMainWindow>
 #include <QPaintEvent>
 #include <QTimer>
+#include <QLabel>
 
-namespace Ui {
-    class Displayer;
-}
+#include <ui_displayer.h>
+#include <basicocclusiondetecter.h>
 
-class Displayer : public QWidget
+class Displayer : public QMainWindow
 {
     Q_OBJECT
 
@@ -21,8 +22,10 @@ public:
 
 private:
     Ui::Displayer *ui;
+    QLabel *status;
     QImage image;
     QTimer timer;
+    BasicOcclusionDetecter detecter;
 
     int currentFrame = 1;
 
@@ -32,6 +35,9 @@ private:
 private slots:
     void nextFrame();
     void prevFrame();
+
+    void showAbout();
+    void showAboutQt();
 };
 
 #endif // DISPLAYER_H

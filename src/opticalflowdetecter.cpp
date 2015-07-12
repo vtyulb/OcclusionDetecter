@@ -5,7 +5,7 @@
 const int dx[] = {1, -1, 0, 0};
 const int dy[] = {0, 0, -1, 1};
 
-const int mass = 10;
+const int mass = 5;
 
 namespace {
     inline int sqr(int a) { return a * a; }
@@ -22,7 +22,7 @@ OpticalFlow OpticalFlowDetecter::detect(const MyImage &i1, const MyImage &i2) {
         }
     }
 
-    int totalError = 0, res = 100500;
+    long long totalError = 0, res = 100500;
 
     for (int i = 0; i < i1.height; i += step)
         for (int j = 0; j < i2.width; j += step) {
@@ -97,7 +97,7 @@ OpticalFlow OpticalFlowDetecter::detect(const MyImage &i1, const MyImage &i2) {
             totalError += res;
         }
 
-    qDebug() << "average error" << totalError * 64 / i1.height / i1.width;
+    qDebug() << "average error" << totalError / i1.height / i1.width;
 
     //-----------------------------
     for (int i = 0; i < i1.height; i += step)
@@ -119,7 +119,7 @@ int OpticalFlowDetecter::cmp(const MyImage &a, const MyImage &b, int x1, int y1,
 
     for (int i = -step / 2; i < step + step / 2; i++)
         for (int j = -step / 2; j < step + step / 2; j++)
-            res += sqr(abs(a[i + y1][j + x1] - b[i + y2][j + x2]));
+            res += abs(a[i + y1][j + x1] - b[i + y2][j + x2]);
 
     return res;
 }

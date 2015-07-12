@@ -10,7 +10,7 @@ struct Point {
     int dy;
 
     Point(int x = 0, int y = 0) { dx = x; dy = y; }
-    int dist() { return sqrt(dx * dx + dy * dy); }
+    int dist() const { return sqrt(dx * dx + dy * dy); }
 };
 
 class OpticalFlow
@@ -21,6 +21,7 @@ class OpticalFlow
         QVector<QVector<Point> > flow;
 
         QVector<Point>& operator[](int i) { return flow[i]; }
+        const QVector<Point> operator[](int i) const { return flow[i]; }
 };
 
 #endif // OPTICALFLOW_H
