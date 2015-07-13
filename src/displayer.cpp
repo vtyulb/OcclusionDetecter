@@ -63,7 +63,7 @@ void Displayer::keyPressEvent(QKeyEvent *event) {
             timer.start();
     } else if (event->key() == Qt::Key_Right)
         nextFrame();
-    else
+    else if (event->key() == Qt::Key_Left)
         prevFrame();
 }
 
