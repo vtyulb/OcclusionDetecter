@@ -14,19 +14,26 @@ struct MyImage {
     int width;
     int height;
 
-    byte **bright;
-    int *counter;
-
-
+    byte *bright;
 
     MyImage(const MyImage &src) {
-        counter = src.counter;
-        bright = src.bright;
         height = src.height;
         width = src.width;
 
-        (*counter) += 1;
+        init();
+        memcpy(bright - width, src.bright - width, (height + 2) * width);
     }
+
+    MyImage& operator =(const MyImage &src) {
+        height = src.height;
+        width = src.width;
+
+        init();
+        memcpy(bright - width, src.bright - width, (height + 2) * width);
+
+        return *this;
+    }
+
 
     MyImage(int width, int height) {
         this->height = height;
@@ -55,39 +62,27 @@ struct MyImage {
 
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++)
-                bright[i][j] = flow[i][j].dist() * 10;
+                (*this)[i][j] = flow[i][j].dist();
 
     }
 
     const byte* operator[](int y) const {
         if (y >= 0 && y < height)
-            return bright[y];
+            return bright + width * y;
         else
-            return bright[0];
+            return bright;
     }
 
     byte* operator[](int y)  {
         if (y >= 0 && y < height)
-            return bright[y];
+            return bright + width * y;
         else
-            return bright[0];
+            return bright;
     }
 
     void init() {
-        bright = new byte*[height + 2] + 1;
-        for (int i = -1; i <= height; i++)
-            bright[i] = new byte[width];
+        bright = new byte[(height + 2) * width] + width;
 
-        counter = new int;
-        (*counter) = 1;
-    }
-
-    void release() {
-        for (int i = -1; i <= height; i++)
-            delete[] bright[i];
-
-        delete[] (bright - 1);
-        delete counter;
     }
 
     QImage toImage() {
@@ -104,23 +99,18 @@ struct MyImage {
 
 
     ~MyImage() {
-        assert(*counter < 10);
-        assert(*counter > 0);
-        if (*counter == 1)
-            release();
-        else
-            *counter -= 1;
+        delete[] (bright - width);
     }
 
     MyImage(MyImage&& tmp) {
-        bright = tmp.bright;
         height = tmp.height;
         width = tmp.width;
-        counter = tmp.counter;
+
+        init();
+        memcpy(bright - width, tmp.bright - width, (height + 2) * width);
     }
 
     MyImage& operator =(MyImage &&a) = delete;
-    MyImage& operator =(const MyImage &a) = delete;
     MyImage() = delete;
 };
 

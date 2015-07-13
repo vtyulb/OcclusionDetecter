@@ -2,6 +2,8 @@
 #define BASICOCCLUSIONDETECTER_H
 
 #include <abstractocclusiondetecter.h>
+#include <opticalflow.h>
+#include <myimage.h>
 
 class BasicOcclusionDetecter : public AbstractOcclusionDetecter
 {
@@ -11,7 +13,12 @@ class BasicOcclusionDetecter : public AbstractOcclusionDetecter
         Occlusions getOcclusions(QImage, QImage);
 
     private:
-        QImage prev;
+        MyImage previousOcclusion;
+        OpticalFlow previousFlow;
+        bool hasPrevious = false;
+
+        QImage averageIt();
+        MyImage apply(const MyImage&, const OpticalFlow&);
 };
 
 #endif // BASICOCCLUSIONDETECTER_H

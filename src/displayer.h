@@ -27,7 +27,7 @@ private:
     QTimer timer;
     BasicOcclusionDetecter detecter;
 
-    int currentFrame = 1;
+    int currentFrame = 20;
 
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent*);

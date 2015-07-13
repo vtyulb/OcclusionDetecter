@@ -6,8 +6,8 @@ namespace {
         return 1 / sqrt(3.141592 * sigma * sigma) * exp(-dist / sigma / sigma);
     }
 
-    const int window = 5;
-    const int sigma_spatial = 60;
+    const int window = 15;
+    const int sigma_spatial = 40;
     const int sigma_color = 7;
     const int mxn = 256*256;
 }

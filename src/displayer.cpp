@@ -7,7 +7,7 @@
 
 #include <basicocclusiondetecter.h>
 
-const QString videoPath = "susi/image";
+const QString videoPath = "madmax/image";
 
 Displayer::Displayer() :
     QMainWindow(0),
@@ -74,6 +74,7 @@ void Displayer::prevFrame() {
 
 void Displayer::nextFrame() {
     status->setText("generating next frame...");
+    qApp->processEvents();
     currentFrame++;
 
     QImage i1;
