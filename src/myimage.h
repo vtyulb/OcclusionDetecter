@@ -10,6 +10,9 @@
 
 typedef unsigned char byte;
 
+const int dx[] = {1, -1, 0, 0};
+const int dy[] = {0, 0, -1, 1};
+
 struct MyImage {
     int width;
     int height;
@@ -82,7 +85,7 @@ struct MyImage {
 
     void init() {
         bright = new byte[(height + 2) * width] + width;
-
+        memset(bright - width, 0, (height + 2) * width);
     }
 
     QImage toImage() {

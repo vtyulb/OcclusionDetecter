@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QRect>
 #include <QMessageBox>
+#include <QDebug>
 
 #include <basicocclusiondetecter.h>
 
@@ -42,6 +43,9 @@ Displayer::~Displayer()
 
 void Displayer::setImage(const QImage &im) {
     image = im;
+    static int number = 1;
+    im.save("output" + QString::number(number / 100) + QString::number(number % 100 / 10) + QString::number(number % 10) + ".jpg");
+    number++;
     repaint();
 }
 
@@ -81,6 +85,7 @@ void Displayer::nextFrame() {
     QImage i2;
 
     if (!i1.load((videoPath + QString::number(currentFrame) + ".jpg")) || !i2.load((videoPath + QString::number(currentFrame + 1) + ".jpg"))) {
+        qDebug() << "--------------again--------------";
         currentFrame = 0;
         nextFrame();
         return;
