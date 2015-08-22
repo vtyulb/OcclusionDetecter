@@ -3,6 +3,7 @@
 #include "opticalflowdetecter.h"
 
 const int mass = 64;
+const int step = 4;
 
 namespace {
     inline int sqr(int a) { return a * a; }
