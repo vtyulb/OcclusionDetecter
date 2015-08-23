@@ -7,6 +7,7 @@
 #include <QDebug>
 
 #include <basicocclusiondetecter.h>
+#include <opencvbasedocclusiondetecter.h>
 
 const QString videoPath = "madmax/image";
 
@@ -31,6 +32,10 @@ Displayer::Displayer() :
     QObject::connect(ui->actionExit, SIGNAL(triggered(bool)), this, SLOT(close()));
     QObject::connect(ui->actionAbout, SIGNAL(triggered(bool)), this, SLOT(showAbout()));
     QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered(bool)), this, SLOT(showAboutQt()));
+
+
+    detecter = new OpenCVBasedOcclusionDetecter();
+
 
     nextFrame();
     show();
@@ -91,7 +96,10 @@ void Displayer::nextFrame() {
         return;
     }
 
-    setImage(detecter.getOcclusions(i1, i2).getRes());
+    i1.setText("path", videoPath + QString::number(currentFrame) + ".jpg");
+    i2.setText("path", videoPath + QString::number(currentFrame + 1) + ".jpg");
+
+    setImage(detecter->getOcclusions(i1, i2).getRes());
 
     status->setText("waiting for event...");
 }

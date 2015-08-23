@@ -25,7 +25,7 @@ private:
     QLabel *status;
     QImage image;
     QTimer timer;
-    BasicOcclusionDetecter detecter;
+    AbstractOcclusionDetecter *detecter;
 
     int currentFrame = 20;
 

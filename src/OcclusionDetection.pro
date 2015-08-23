@@ -11,7 +11,6 @@ CONFIG   += console c++11
 
 TEMPLATE = app
 
-
 SOURCES += main.cpp \
     abstractocclusiondetecter.cpp \
     basicocclusiondetecter.cpp \
@@ -20,7 +19,6 @@ SOURCES += main.cpp \
     opticalflowdetecter.cpp \
     bilinearfilter.cpp \
     superfilter.cpp \
-    cvopticalflowdetecter.cpp \
     opencvbasedocclusiondetecter.cpp
 
 DISTFILES +=
@@ -35,8 +33,9 @@ HEADERS += \
     myimage.h \
     bilinearfilter.h \
     superfilter.h \
-    cvopticalflowdetecter.h \
     opencvbasedocclusiondetecter.h
 
 FORMS += \
     displayer.ui
+
+LIBS += -lopencv_calib3d -lopencv_imgproc -lopencv_core -lopencv_imgcodecs
