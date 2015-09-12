@@ -6,6 +6,7 @@
 #include <QPaintEvent>
 #include <QTimer>
 #include <QLabel>
+#include <QImage>
 
 #include <ui_displayer.h>
 #include <basicocclusiondetecter.h>
@@ -24,13 +25,18 @@ private:
     Ui::Displayer *ui;
     QLabel *status;
     QImage image;
+    QImage *face = NULL;
+    QString pathl, pathr, patht1, patht2;
     QTimer timer;
     AbstractOcclusionDetecter *detecter;
 
-    int currentFrame = 20;
+    int currentFrame = 0;
 
+    void nativePaint();
     void paintEvent(QPaintEvent *);
     void keyPressEvent(QKeyEvent*);
+
+    void dump();
 
 private slots:
     void nextFrame();

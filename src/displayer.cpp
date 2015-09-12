@@ -9,7 +9,7 @@
 #include <basicocclusiondetecter.h>
 #include <opencvbasedocclusiondetecter.h>
 
-const QString videoPath = "madmax/image";
+const QString videoPath = "/home/vlad/work/sintel/training/";
 
 Displayer::Displayer() :
     QMainWindow(0),
@@ -18,7 +18,7 @@ Displayer::Displayer() :
     ui->setupUi(this);
 
     timer.setInterval(1000/24);
-    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
+//    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
     timer.start();
 
     QTimer *focus = new QTimer(this);
@@ -48,16 +48,41 @@ Displayer::~Displayer()
 
 void Displayer::setImage(const QImage &im) {
     image = im;
-    static int number = 1;
-    im.save("output" + QString::number(number / 100) + QString::number(number % 100 / 10) + QString::number(number % 10) + ".jpg");
-    number++;
     repaint();
 }
 
-void Displayer::paintEvent(QPaintEvent *) {
-    QPainter p(this);
-    p.drawImage(QRect(0, 30, width(), height() - 55), image);
+void Displayer::nativePaint() {
+    delete face;
+    int w = width();
+    int h = height() - 30;
+    face = new QImage(w, h, QImage::Format_ARGB32);
+
+    QPainter p(face);
+    p.drawImage(QRect(0, 0, w / 2, h / 2), QImage(pathl));
+    p.drawImage(QRect(0, h / 2, w / 2, h / 2), QImage(patht1));
+    p.drawImage(QRect(w / 2, 0, w / 2, h / 2), QImage(patht2));
+    p.drawImage(QRect(w / 2, h / 2, w / 2, h / 2), image);
+
+
+    p.setBrush(QBrush(QColor("white")));
+    p.drawRect(1, 0, 145, 40);
+    p.drawRect(w / 2, 0, 145, 40);
+    p.drawRect(1, h / 2, 145, 40);
+    p.drawRect(w / 2, h / 2, 145, 40);
+
+    p.setPen(QColor("black"));
+    p.drawText(5, 30, "Left channel");
+    p.drawText(w / 2 + 5, 30, "Ground Truth: depth");
+    p.drawText(5, h / 2 + 30, "Ground Truth: occlusions");
+    p.drawText(w / 2 + 5, h / 2 + 30, "My occlusions on depth");
+
     p.end();
+}
+
+void Displayer::paintEvent(QPaintEvent *) {
+    QPainter p1(this);
+    p1.drawImage(QRect(0, 30, width(), height() - 30), *face);
+    p1.end();
 }
 
 void Displayer::keyPressEvent(QKeyEvent *event) {
@@ -68,8 +93,10 @@ void Displayer::keyPressEvent(QKeyEvent *event) {
             timer.stop();
             status->setText("paused");
             qApp->processEvents();
-        } else
+        } else {
             timer.start();
+            nextFrame();
+        }
     } else if (event->key() == Qt::Key_Right)
         nextFrame();
     else if (event->key() == Qt::Key_Left)
@@ -89,19 +116,31 @@ void Displayer::nextFrame() {
     QImage i1;
     QImage i2;
 
-    if (!i1.load((videoPath + QString::number(currentFrame) + ".jpg")) || !i2.load((videoPath + QString::number(currentFrame + 1) + ".jpg"))) {
+    pathl = videoPath + "final_left/alley_2/frame_00" + QString::number(currentFrame / 10) + QString::number(currentFrame % 10) + ".png";
+    pathr = videoPath + "final_right/alley_2/frame_00" + QString::number(currentFrame / 10) + QString::number(currentFrame % 10) + ".png";
+    patht1 = videoPath + "occlusions/alley_2/frame_00" + QString::number(currentFrame / 10) + QString::number(currentFrame % 10) + ".png";
+    patht2 = videoPath + "disparities_viz/alley_2/frame_00" + QString::number(currentFrame / 10) + QString::number(currentFrame % 10) + ".png";
+
+
+    if (!i1.load(pathl) || !i2.load(pathr)) {
         qDebug() << "--------------again--------------";
         currentFrame = 0;
         nextFrame();
         return;
     }
 
-    i1.setText("path", videoPath + QString::number(currentFrame) + ".jpg");
-    i2.setText("path", videoPath + QString::number(currentFrame + 1) + ".jpg");
+    i1.setText("path", pathl);
+    i2.setText("path", pathr);
 
     setImage(detecter->getOcclusions(i1, i2).getRes());
+    nativePaint();
+    repaint();
+    dump();
 
     status->setText("waiting for event...");
+
+    if (timer.isActive())
+        QTimer::singleShot(17, this, SLOT(nextFrame()));
 }
 
 void Displayer::showAboutQt() {
@@ -110,4 +149,10 @@ void Displayer::showAboutQt() {
 
 void Displayer::showAbout() {
     QMessageBox::about(this, "About", "VirtualDub 2.0 - unusefull non-working clone of virtualdub.\nWritten by Vladislav Tyulbashev <vtyulb@vtyulb.ru>");
+}
+
+void Displayer::dump() {
+    static int number = 1;
+    face->save("output" + QString::number(number / 100) + QString::number(number % 100 / 10) + QString::number(number % 10) + ".jpg");
+    number++;
 }

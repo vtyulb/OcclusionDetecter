@@ -38,4 +38,4 @@ HEADERS += \
 FORMS += \
     displayer.ui
 
-LIBS += -lopencv_calib3d -lopencv_imgproc -lopencv_core -lopencv_imgcodecs
+LIBS += -lopencv_calib3d -lopencv_imgproc -lopencv_core -lopencv_imgcodecs -lopencv_video
