@@ -15,7 +15,6 @@ SOURCES += main.cpp \
     abstractocclusiondetecter.cpp \
     basicocclusiondetecter.cpp \
     displayer.cpp \
-    occlusions.cpp \
     opticalflowdetecter.cpp \
     bilinearfilter.cpp \
     superfilter.cpp \

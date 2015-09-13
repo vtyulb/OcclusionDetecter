@@ -17,7 +17,7 @@ Displayer::Displayer() :
 {
     ui->setupUi(this);
 
-    timer.setInterval(1000/24);
+    timer.setInterval(250);
 //    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
     timer.start();
 
@@ -46,22 +46,18 @@ Displayer::~Displayer()
     delete ui;
 }
 
-void Displayer::setImage(const QImage &im) {
-    image = im;
-    repaint();
-}
-
 void Displayer::nativePaint() {
     delete face;
     int w = width();
     int h = height() - 30;
     face = new QImage(w, h, QImage::Format_ARGB32);
 
+    //pathl, patht1, patht2
     QPainter p(face);
     p.drawImage(QRect(0, 0, w / 2, h / 2), QImage(pathl));
     p.drawImage(QRect(0, h / 2, w / 2, h / 2), QImage(patht1));
-    p.drawImage(QRect(w / 2, 0, w / 2, h / 2), QImage(patht2));
-    p.drawImage(QRect(w / 2, h / 2, w / 2, h / 2), image);
+    p.drawImage(QRect(w / 2, 0, w / 2, h / 2), occlusions.i2);
+    p.drawImage(QRect(w / 2, h / 2, w / 2, h / 2), occlusions.i1);
 
 
     p.setBrush(QBrush(QColor("white")));
@@ -72,7 +68,7 @@ void Displayer::nativePaint() {
 
     p.setPen(QColor("black"));
     p.drawText(5, 30, "Left channel");
-    p.drawText(w / 2 + 5, 30, "Ground Truth: depth");
+    p.drawText(w / 2 + 5, 30, "vertical faith");
     p.drawText(5, h / 2 + 30, "Ground Truth: occlusions");
     p.drawText(w / 2 + 5, h / 2 + 30, "My occlusions on depth");
 
@@ -132,12 +128,13 @@ void Displayer::nextFrame() {
     i1.setText("path", pathl);
     i2.setText("path", pathr);
 
-    setImage(detecter->getOcclusions(i1, i2).getRes());
+    occlusions = detecter->getOcclusions(i1, i2);
     nativePaint();
     repaint();
     dump();
 
     status->setText("waiting for event...");
+    qApp->processEvents();
 
     if (timer.isActive())
         QTimer::singleShot(17, this, SLOT(nextFrame()));

@@ -15,6 +15,8 @@
 
 const double THRESHHOLD = 0.6;
 
+#define min(a, b) (a < b ? a : b)
+
 OpenCVBasedOcclusionDetecter::OpenCVBasedOcclusionDetecter()
 {
 
@@ -52,6 +54,8 @@ Occlusions OpenCVBasedOcclusionDetecter::getOcclusions(QImage left, QImage right
 
 
     QImage result(left.width(), left.height(), QImage::Format_RGB32);
+    QImage verticalFaith(left.width(), left.height(), QImage::Format_RGB32);
+
     for (int i = 0; i < left.width(); i++)
         for (int j = 0; j < left.height(); j++) {
             double dx = flow.ptr<float>(j)[2 * i];
@@ -60,10 +64,11 @@ Occlusions OpenCVBasedOcclusionDetecter::getOcclusions(QImage left, QImage right
             int color = sqrt(dx * dx + dy * dy) * 10;
             if (color > 255)
                 color = 255;
-            result.setPixel(i, j, QColor(color, color, color).rgb());
-        }
 
-    result.save("tmp.png");
+            result.setPixel(i, j, QColor(color, color, color).rgb());
+            int c2 = min(fabs(dy), 6.0) * 40;
+            verticalFaith.setPixel(i, j, QColor(c2, c2, c2).rgb());
+        }
 
     QPainter p(&result);
     p.setBrush(QBrush(QColor("red")));
@@ -91,7 +96,8 @@ Occlusions OpenCVBasedOcclusionDetecter::getOcclusions(QImage left, QImage right
     p.end();
 
     Occlusions occ;
-    occ.setRes(result);
+    occ.i1 = result;
+    occ.i2 = verticalFaith;
     return occ;
 }
 

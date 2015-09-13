@@ -93,6 +93,6 @@ Occlusions BasicOcclusionDetecter::getOcclusions(QImage i1, QImage i2) {
     hasPrevious = true;
 
     Occlusions res;
-    res.setRes(imageRes);
+    res.i1 = imageRes;
     return res;
 }

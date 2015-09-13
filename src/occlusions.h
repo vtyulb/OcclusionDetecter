@@ -3,17 +3,9 @@
 
 #include <QImage>
 
-class Occlusions
-{
-    public:
-        Occlusions();
-
-        void display();
-        void setRes(const QImage&);
-        QImage getRes();
-
-    private:
-        QImage res;
+struct Occlusions {
+    QImage i1;
+    QImage i2;
 };
 
 #endif // OCCLUSIONS_H

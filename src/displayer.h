@@ -10,6 +10,7 @@
 
 #include <ui_displayer.h>
 #include <basicocclusiondetecter.h>
+#include <occlusions.h>
 
 class Displayer : public QMainWindow
 {
@@ -24,10 +25,10 @@ public:
 private:
     Ui::Displayer *ui;
     QLabel *status;
-    QImage image;
     QImage *face = NULL;
     QString pathl, pathr, patht1, patht2;
     QTimer timer;
+    Occlusions occlusions;
     AbstractOcclusionDetecter *detecter;
 
     int currentFrame = 0;
