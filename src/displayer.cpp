@@ -123,7 +123,7 @@ void Displayer::nextFrame() {
     if (!i1.load(pathl) || !i2.load(pathr)) {
         qDebug() << "--------------again--------------";
         currentFrame = 0;
-        nextFrame();
+        timer.stop();
         return;
     }
 

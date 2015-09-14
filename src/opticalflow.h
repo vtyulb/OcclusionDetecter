@@ -10,7 +10,7 @@ struct Point {
     int dy;
 
     Point(int x = 0, int y = 0) { dx = x; dy = y; }
-    int dist() const { return sqrt(dx * dx + dy * dy) * 20; }
+    int dist() const { return std::min(sqrt(dx * dx + dy * dy) * 20, 255.0); }
 };
 
 class OpticalFlow

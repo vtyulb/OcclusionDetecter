@@ -28,7 +28,7 @@ OpticalFlow OpticalFlowDetecter::detect(const MyImage &i1, const MyImage &i2) {
             const int mx = 10;
             int res = 10000000;
 
-            const int weight = j > 0 ? 200 : 0;
+            const int weight = j > 16 ? std::min(j - 16, 35) : 0;
             const double proposed = j > 0 ? flow[i][j - step].dx : 0;
 
             for (int dx = -mx; dx < mx + 1; dx++) {
@@ -41,6 +41,28 @@ OpticalFlow OpticalFlowDetecter::detect(const MyImage &i1, const MyImage &i2) {
 
             totalError += res;
         }
+
+    // symmetric now
+    for (int i = 0; i < i1.height; i += step)
+        for (int j = i1.width - 16; j >= 0; j -= step) {
+
+            const int mx = 10;
+            int res = 10000000;
+
+            const int weight = 35;
+            const double proposed = flow[i][j + step].dx;
+
+            for (int dx = -mx; dx < mx + 1; dx++) {
+                int nres = cmp(i1, i2, j, i, j + dx, i);
+                if (nres < res - weight * abs(dx - proposed)) {
+                    flow[i][j].dx = dx;
+                    res = nres;
+                }
+            }
+
+            totalError += res;
+        }
+
 
     /*for (int i = 0; i < i1.height; i += step)
         for (int j = 0; j < i2.width; j += step) {
