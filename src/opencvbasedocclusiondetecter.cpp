@@ -26,7 +26,6 @@ Occlusions OpenCVBasedOcclusionDetecter::getOcclusions(QImage left, QImage right
 
     qDebug() << "passing file" << left.text("path") << "to opencv";
     qDebug() << "passing file" << right.text("path") << "to opencv";
-    qDebug() << "---";
     cv::Mat matLeft = cv::imread(cv::String(left.text("path").toStdString().data()), cv::IMREAD_GRAYSCALE);
     cv::Mat matRight = cv::imread(cv::String(right.text("path").toStdString().data()), cv::IMREAD_GRAYSCALE);
     cv::Mat flow(matLeft.rows, matLeft.cols, CV_32FC2);

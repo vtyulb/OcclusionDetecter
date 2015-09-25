@@ -12,14 +12,8 @@ const QString videoPath = "/home/vlad/work/sintel/training/";
 
 Displayer::Displayer()
 {
-    timer.setInterval(250);
-//    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
-    timer.start();
-
     detecter = new OpenCVBasedOcclusionDetecter();
-
-
-    nextFrame();
+    while (nextFrame());
 }
 
 Displayer::~Displayer()
@@ -58,29 +52,15 @@ void Displayer::nativePaint() {
     p.end();
 }
 
-void Displayer::keyPressEvent(QKeyEvent *event) {
-    if (event->key() == Qt::Key_Escape)
-        exit(0);
-    else if (event->key() == Qt::Key_Space) {
-        if (timer.isActive()) {
-            timer.stop();
-        } else {
-            timer.start();
-            nextFrame();
-        }
-    } else if (event->key() == Qt::Key_Right)
-        nextFrame();
-    else if (event->key() == Qt::Key_Left)
-        prevFrame();
-}
-
 void Displayer::prevFrame() {
     currentFrame -= 2;
     nextFrame();
 }
 
-void Displayer::nextFrame() {
+bool Displayer::nextFrame() {
     currentFrame++;
+
+    qDebug() << "\n--------------- processing frame " << currentFrame << " -------------------";
 
     QImage i1;
     QImage i2;
@@ -94,8 +74,7 @@ void Displayer::nextFrame() {
     if (!i1.load(pathl) || !i2.load(pathr)) {
         qDebug() << "--------------again--------------";
         currentFrame = 0;
-        timer.stop();
-        return;
+        return false;
     }
 
     i1.setText("path", pathl);
@@ -111,8 +90,7 @@ void Displayer::nextFrame() {
     nativePaint();
     dump();
 
-    if (timer.isActive())
-        QTimer::singleShot(17, this, SLOT(nextFrame()));
+    return true;
 }
 
 void Displayer::dump() {

@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QPaintEvent>
-#include <QTimer>
 #include <QLabel>
 #include <QImage>
 
@@ -23,19 +22,17 @@ public:
 private:
     QImage *face = NULL;
     QString pathl, pathr, patht1, patht2;
-    QTimer timer;
     Occlusions occlusions;
     AbstractOcclusionDetecter *detecter;
 
     int currentFrame = 0;
 
     void nativePaint();
-    void keyPressEvent(QKeyEvent*);
 
     void dump();
 
 private slots:
-    void nextFrame();
+    bool nextFrame();
     void prevFrame();
 };
 
