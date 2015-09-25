@@ -38,7 +38,6 @@ HEADERS += \
     lrcfinder.h \
     occfinder.h
 
-FORMS += \
-    displayer.ui
+FORMS +=
 
 LIBS += -lopencv_calib3d -lopencv_imgproc -lopencv_core -lopencv_imgcodecs -lopencv_video

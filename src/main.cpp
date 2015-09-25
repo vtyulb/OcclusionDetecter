@@ -2,7 +2,7 @@
 
 #include <QFile>
 #include <QImage>
-#include <QApplication>
+#include <QCoreApplication>
 #include <QTimer>
 #include <QEventLoop>
 
@@ -11,7 +11,7 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QCoreApplication a(argc, argv);
 
     Displayer d;
 

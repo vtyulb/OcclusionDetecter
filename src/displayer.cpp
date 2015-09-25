@@ -1,5 +1,4 @@
 #include "displayer.h"
-#include "ui_displayer.h"
 
 #include <QPainter>
 #include <QRect>
@@ -11,39 +10,20 @@
 
 const QString videoPath = "/home/vlad/work/sintel/training/";
 
-Displayer::Displayer() :
-    QMainWindow(0),
-    ui(new Ui::Displayer)
+Displayer::Displayer()
 {
-    ui->setupUi(this);
-
     timer.setInterval(250);
 //    QObject::connect(&timer, SIGNAL(timeout()), this, SLOT(nextFrame()));
     timer.start();
-
-    QTimer *focus = new QTimer(this);
-    focus->setInterval(0.1);
-    QObject::connect(focus, SIGNAL(timeout()), this, SLOT(setFocus()));
-    focus->start();
-
-    status = new QLabel;
-    ui->statusbar->addWidget(status);
-
-    QObject::connect(ui->actionExit, SIGNAL(triggered(bool)), this, SLOT(close()));
-    QObject::connect(ui->actionAbout, SIGNAL(triggered(bool)), this, SLOT(showAbout()));
-    QObject::connect(ui->actionAbout_Qt, SIGNAL(triggered(bool)), this, SLOT(showAboutQt()));
-
 
     detecter = new OpenCVBasedOcclusionDetecter();
 
 
     nextFrame();
-    show();
 }
 
 Displayer::~Displayer()
 {
-    delete ui;
 }
 
 void Displayer::nativePaint() {
@@ -78,20 +58,12 @@ void Displayer::nativePaint() {
     p.end();
 }
 
-void Displayer::paintEvent(QPaintEvent *) {
-    QPainter p1(this);
-    p1.drawImage(QRect(0, 30, width(), height() - 30), *face);
-    p1.end();
-}
-
 void Displayer::keyPressEvent(QKeyEvent *event) {
     if (event->key() == Qt::Key_Escape)
         exit(0);
     else if (event->key() == Qt::Key_Space) {
         if (timer.isActive()) {
             timer.stop();
-            status->setText("paused");
-            qApp->processEvents();
         } else {
             timer.start();
             nextFrame();
@@ -108,8 +80,6 @@ void Displayer::prevFrame() {
 }
 
 void Displayer::nextFrame() {
-    status->setText("generating next frame...");
-    qApp->processEvents();
     currentFrame++;
 
     QImage i1;
@@ -139,26 +109,14 @@ void Displayer::nextFrame() {
 
 
     nativePaint();
-    repaint();
     dump();
-
-    status->setText("waiting for event...");
-    qApp->processEvents();
 
     if (timer.isActive())
         QTimer::singleShot(17, this, SLOT(nextFrame()));
 }
 
-void Displayer::showAboutQt() {
-    QMessageBox::aboutQt(this, "About Qt");
-}
-
-void Displayer::showAbout() {
-    QMessageBox::about(this, "About", "VirtualDub 2.0 - unusefull non-working clone of virtualdub.\nWritten by Vladislav Tyulbashev <vtyulb@vtyulb.ru>");
-}
-
 void Displayer::dump() {
-    static int number = 1;
+    static int number = 0;
     face->save("output" + QString::number(number / 100) + QString::number(number % 100 / 10) + QString::number(number % 10) + ".png");
     number++;
 }
