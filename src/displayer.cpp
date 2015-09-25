@@ -57,22 +57,23 @@ void Displayer::nativePaint() {
     //pathl, patht1, patht2
     QPainter p(face);
     p.drawImage(QRect(0, 0, w / 2, h / 2), QImage(patht1));
-    p.drawImage(QRect(0, h / 2, w / 2, h / 2), QImage(patht2));
+    p.drawImage(QRect(0, h / 2, w / 2, h / 2), occlusions.i3);
     p.drawImage(QRect(w / 2, 0, w / 2, h / 2), occlusions.i2);
     p.drawImage(QRect(w / 2, h / 2, w / 2, h / 2), occlusions.i1);
 
 
     p.setBrush(QBrush(QColor("white")));
-    p.drawRect(1, 0, 145, 40);
-    p.drawRect(w / 2, 0, 145, 40);
-    p.drawRect(1, h / 2, 145, 40);
-    p.drawRect(w / 2, h / 2, 145, 40);
+    p.drawRect(1, 0, 165, 40);
+    p.drawRect(w / 2, 0, 165, 40);
+    p.drawRect(1, h / 2, 165, 40);
+    p.drawRect(w / 2, h / 2, 165, 40);
 
     p.setPen(QColor("black"));
-    p.drawText(5, 30, "Left channel");
-    p.drawText(w / 2 + 5, 30, "vertical faith");
-    p.drawText(5, h / 2 + 30, "Ground Truth: occlusions");
-    p.drawText(w / 2 + 5, h / 2 + 30, "My occlusions on depth");
+    p.setFont(QFont("Times", 18, QFont::Bold));
+    p.drawText(5, 30, "GT Occlusions");
+    p.drawText(w / 2 + 5, 30, "LRC");
+    p.drawText(5, h / 2 + 30, "My ME");
+    p.drawText(w / 2 + 5, h / 2 + 30, "MSU ME");
 
     p.end();
 }
@@ -134,7 +135,7 @@ void Displayer::nextFrame() {
     occlusions = detecter->getOcclusions(i1, i2);
 
     BasicOcclusionDetecter det;
-    occlusions.i2 = det.getOcclusions(i1, i2).i1;
+    occlusions = det.getOcclusions(i1, i2);
 
 
     nativePaint();
@@ -158,6 +159,6 @@ void Displayer::showAbout() {
 
 void Displayer::dump() {
     static int number = 1;
-    face->save("output" + QString::number(number / 100) + QString::number(number % 100 / 10) + QString::number(number % 10) + ".jpg");
+    face->save("output" + QString::number(number / 100) + QString::number(number % 100 / 10) + QString::number(number % 10) + ".png");
     number++;
 }

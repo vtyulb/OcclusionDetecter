@@ -6,11 +6,11 @@
 #include <QVector>
 
 struct Point {
-    int dx;
-    int dy;
+    double dx;
+    double dy;
 
-    Point(int x = 0, int y = 0) { dx = x; dy = y; }
-    int dist() const { return std::min(sqrt(dx * dx + dy * dy) * 20, 255.0); }
+    Point(double x = 0, double y = 0) { dx = x; dy = y; }
+    int dist() const { return std::min(sqrt((dx * dx + dy * dy) * 100.0), 255.0); }
 };
 
 class OpticalFlow
@@ -22,6 +22,9 @@ class OpticalFlow
 
         QVector<Point>& operator[](int i) { return flow[i]; }
         const QVector<Point> operator[](int i) const { return flow[i]; }
+
+        inline int width() const { return flow[0].size(); }
+        inline int height() const { return flow.size(); }
 };
 
 #endif // OPTICALFLOW_H

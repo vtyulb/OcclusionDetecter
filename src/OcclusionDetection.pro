@@ -18,7 +18,9 @@ SOURCES += main.cpp \
     opticalflowdetecter.cpp \
     bilinearfilter.cpp \
     superfilter.cpp \
-    opencvbasedocclusiondetecter.cpp
+    opencvbasedocclusiondetecter.cpp \
+    lrcfinder.cpp \
+    occfinder.cpp
 
 DISTFILES +=
 
@@ -32,7 +34,9 @@ HEADERS += \
     myimage.h \
     bilinearfilter.h \
     superfilter.h \
-    opencvbasedocclusiondetecter.h
+    opencvbasedocclusiondetecter.h \
+    lrcfinder.h \
+    occfinder.h
 
 FORMS += \
     displayer.ui
