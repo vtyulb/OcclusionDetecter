@@ -45,8 +45,8 @@ void Displayer::nativePaint() {
     p.setPen(QColor("black"));
     p.setFont(QFont("Times", 18, QFont::Bold));
     p.drawText(5, 30, "GT Occlusions");
-    p.drawText(w / 2 + 5, 30, "LRC");
-    p.drawText(5, h / 2 + 30, "My ME");
+    p.drawText(w / 2 + 5, 30, "Occlusions");
+    p.drawText(5, h / 2 + 30, "Faith?");
     p.drawText(w / 2 + 5, h / 2 + 30, "MSU ME");
 
     p.end();
@@ -60,7 +60,7 @@ void Displayer::prevFrame() {
 bool Displayer::nextFrame() {
     currentFrame++;
 
-    qDebug() << "\n--------------- processing frame " << currentFrame << " -------------------";
+    qDebug() << "\n--------------- processing frame " << currentFrame << "-------------------";
 
     QImage i1;
     QImage i2;

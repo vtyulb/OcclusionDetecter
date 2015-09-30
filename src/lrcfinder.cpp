@@ -10,8 +10,11 @@ MyImage LRCfinder::find(const OpticalFlow &flow1, const OpticalFlow &flow2) {
             int in = flow1[i][j].dy + i;
             int jn = flow1[i][j].dx + j;
 
-            res[i][j] = fabs(flow2[in][jn].dy + in - i) +
-                        fabs(flow2[in][jn].dx + jn - j);
+            if (in < 0 || jn < 0 || in >= flow1.height() || jn >= flow1.width())
+                res[i][j] = 255;
+            else
+                res[i][j] = fabs(flow2[in][jn].dy + in - i) +
+                            fabs(flow2[in][jn].dx + jn - j);
 
             res[i][j] = min(res[i][j] * 30, 250);
         }

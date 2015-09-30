@@ -17,8 +17,10 @@ class BasicOcclusionDetecter : public AbstractOcclusionDetecter
         OpticalFlow previousFlow;
         bool hasPrevious = false;
 
-        QImage averageIt();
+        Occlusions averageIt(Occlusions);
         MyImage apply(const MyImage&, const OpticalFlow&);
+
+        MyImage getMEFaith(QImage);
 };
 
 #endif // BASICOCCLUSIONDETECTER_H

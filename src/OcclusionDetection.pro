@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     superfilter.cpp \
     opencvbasedocclusiondetecter.cpp \
     lrcfinder.cpp \
-    occfinder.cpp
+    occfinder.cpp \
+    ordfinder.cpp
 
 DISTFILES +=
 
@@ -36,7 +37,8 @@ HEADERS += \
     superfilter.h \
     opencvbasedocclusiondetecter.h \
     lrcfinder.h \
-    occfinder.h
+    occfinder.h \
+    ordfinder.h
 
 FORMS +=
 
