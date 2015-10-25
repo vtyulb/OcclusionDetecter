@@ -13,14 +13,19 @@ class BasicOcclusionDetecter : public AbstractOcclusionDetecter
         Occlusions getOcclusions(QImage, QImage);
 
     private:
-        MyImage previousOcclusion;
-        OpticalFlow previousFlow;
+        MyImage previousDepth;
+        MyImage prediction;
         bool hasPrevious = false;
 
         Occlusions averageIt(Occlusions);
         MyImage apply(const MyImage&, const OpticalFlow&);
 
         MyImage getMEFaith(QImage);
+        MyImage getMEtimeFaith(const OpticalFlow&);
+
+        MyImage stabilize(MyImage prev, MyImage cur, OpticalFlow flow, MyImage faithMap);
+
+        void basicTimeFiltration(MyImage &image);
 };
 
 #endif // BASICOCCLUSIONDETECTER_H

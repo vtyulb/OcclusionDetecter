@@ -21,7 +21,10 @@ SOURCES += main.cpp \
     opencvbasedocclusiondetecter.cpp \
     lrcfinder.cpp \
     occfinder.cpp \
-    ordfinder.cpp
+    ordfinder.cpp \
+    dmcfinder.cpp \
+    depthloader.cpp \
+    opticalflow.cpp
 
 DISTFILES +=
 
@@ -38,7 +41,9 @@ HEADERS += \
     opencvbasedocclusiondetecter.h \
     lrcfinder.h \
     occfinder.h \
-    ordfinder.h
+    ordfinder.h \
+    dmcfinder.h \
+    depthloader.h
 
 FORMS +=
 

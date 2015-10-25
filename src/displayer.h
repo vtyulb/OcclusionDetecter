@@ -25,7 +25,7 @@ private:
     Occlusions occlusions;
     AbstractOcclusionDetecter *detecter;
 
-    int currentFrame = 0;
+    int currentFrame = 551;
 
     void nativePaint();
 

@@ -6,23 +6,32 @@
 const int mass = 64;
 const int step = 4;
 
+//const int width = 436;
+//const int height = 1024;
+
+const int width = 1920;
+const int height = 800;
+const int realHeight = 801;
+
 namespace {
     inline int sqr(int a) { return a * a; }
 }
 
 OpticalFlow OpticalFlowDetecter::useMediaLabAlgo(QString path) {
-    QFile f(path);
-    f.open(QIODevice::ReadOnly);
-
     OpticalFlow flow;
-    flow.flow.resize(436);
-    for (int i = 0; i < 436; i++) {
-        flow[i].resize(1024);
+    flow.flow.resize(realHeight);
+    for (int i = 0; i < realHeight; i++) {
+        flow[i].resize(width);
         flow[i].fill(Point());
     }
 
-    for (int i = 0; i < 432; i += 4)
-        for (int j = 0; j < 1024; j += 4) {
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly))
+        return flow;
+
+
+    for (int i = 0; i < height; i += 4)
+        for (int j = 0; j < width; j += 4) {
             QByteArray r = f.readLine();
             r.resize(r.size() - 1);
 

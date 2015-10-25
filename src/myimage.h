@@ -4,7 +4,9 @@
 #include <assert.h>
 
 #include <QImage>
+#include <QFile>
 #include <QColor>
+#include <QTextStream>
 
 #include <opticalflow.h>
 
@@ -113,7 +115,36 @@ struct MyImage {
         memcpy(bright - width, tmp.bright - width, (height + 2) * width);
     }
 
-    MyImage& operator =(MyImage &&a) = delete;
+    OpticalFlow toOF() {
+        OpticalFlow res(width, height);
+
+        for (int i = 0; i < height; i++)
+            for (int j = 0; j < width; j++)
+                res[i][j] = Point(-((*this)[i][j] - 128.0) / 4.0);
+
+       /* QFile f("/home/vlad/tst.txt");
+        f.open(QIODevice::WriteOnly);
+        QTextStream s(&f);
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++)
+                s << (*this)[i][j] << " ";
+            s << "\n";
+        }*/
+
+        return res;
+    }
+
+    MyImage& operator =(MyImage &&tmp) {
+        height = tmp.height;
+        width = tmp.width;
+
+        init();
+        memcpy(bright - width, tmp.bright - width, (height + 2) * width);
+
+        return *this;
+    }
+
     MyImage() = delete;
 };
 
